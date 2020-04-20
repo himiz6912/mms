@@ -34,7 +34,6 @@ entity Employee {
     Position: text
     Grade: number
 }
-
 entity Subcontractor {
     * ID: text <<Generated>>
     --
@@ -42,7 +41,6 @@ entity Subcontractor {
     * Tel: text
     * Email: text
 }
-
 entity ContractBase {
     * ContractCode: text
     --
@@ -51,7 +49,6 @@ entity ContractBase {
     * Site: text <<FK>>
     * Contractor: text <<FK>>
 }
-
 entity ContractEquipment {
     * ID: text
     --
@@ -60,7 +57,6 @@ entity ContractEquipment {
     * Position: text
     * Height: text
 }
-
 ' This description will be put on estimate.
 entity ContractTermsConditions {
     * ID: text
@@ -71,7 +67,6 @@ entity ContractTermsConditions {
     * Value: number
     * Notes: text
 }
-
 ' This item will be reflected to ServiceID of TermsConditions
 ' Select services for each contract other than a periodic maintenance
 entity ServiceModel {
@@ -82,7 +77,6 @@ entity ServiceModel {
     * DefaultValue: number
     * Notes: text
 }
-
 ' ID=1 is default pattern of maintenance
 entity MaintenanceModel {
     * ID: text
@@ -98,12 +92,12 @@ entity MaintenanceChecklist {
     * CheckStandardID: text <<FK>>
     * ContractCode: text <<FK>>
 }
-
 entity EquipmentBase {
     * Code: text
     --
     Name: text
     Image: image
+    Category: text
 }
 entity EquipmentReplacement {
     Code: text
@@ -111,13 +105,17 @@ entity EquipmentReplacement {
     RemovalNum: number
     AddItem: text <<FK>>
     AddNum: number
+    Cycle: number
+    Reason: text
 }
 entity EquipmentCheckStandards {
     * ID: text <<Generated>>
     --
     EquipmentCode: text <<FK>>
     * ActionID: text <<FK>>
-
+    Name: text
+    Description: text
+    Notes: text
 }
 entity ActionBase {
     * ID: text <<Generated>>
@@ -135,7 +133,6 @@ entity Tools {
     ActionID: text <<FK>>
     Description: text
 }
-
 entity EstimateBaseParameters {
     * ID: text
     --
