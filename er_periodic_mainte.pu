@@ -2,39 +2,39 @@
 hide circle
 skinparam linetype ortho
 
-entity PeriodicMaintenanceSchedule {
+entity MaintenanceSchedule {
     * ID: text <Generated>
     --
     * ContractCode: text <FK>
     * MaintenanceID: text <FK>
     * ScheduledDate: Date
-}
-entity MaintenanceInfo {
-    * ID: text <Generated>
-    --
-    * ContractCode: text <FK>
-    * MaintenanceID: text <FK>
-    * ScheduledDate: Date
-    MaintenanceName: text
-    WorkingTime: number
-    WorkerNumber: number
-    HighPlaceWork: text
-    Outsource: number
+    * MaintenanceName: text
+    * WorkingTime: number
+    * WorkerNumber: number
+    * HighPlaceWork: text
+    * Outsource: number
     AppointmentDate: Date
     AppointmentPerson: text
-    CandidateDate1: Date
-    CandidateDate2: Date
-    Candidatedate3: Date
     ScheduledDate: Date
     AssignedEmployeeID: text <FK>
     AssignedSubcontractorID: text <FK>
-    StartDate: Date
-    EndDate: Date
+    FixedSchedule: Date
+    Status: text
     Notes: textarea
     Attentions: textarea
 }
-entity Record {
+' Status: Appointment/ assignment/ ScheduleFixed/ Pending/ Complete/ RemainingWork
+entity Maintenancechecklist {
     * ID: text <Generated>
+    --
+    * ScheduleID: text <FK> 
+    * StandardID: text <FK>
+    * EquipmentID: text <FK>
+    Notes: textarea
+    Attentions: textarea
+}
+entity MaintenanceRecord {
+    * ChecklistID: text <FK>
     --
     * Code: text <FK>
     * Quantity: number
@@ -44,6 +44,7 @@ entity Record {
     Notes: textArea
     Attentions: textArea
 }
+
 
 Contract ||--o{ TargetContractEquipment
 Contract |o--o{ PeriodicMaintenance
