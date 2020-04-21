@@ -1,0 +1,52 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity PeriodicMaintenanceSchedule {
+    * ID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * MaintenanceID: text <FK>
+    * ScheduledDate: Date
+}
+entity MaintenanceInfo {
+    * ID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * MaintenanceID: text <FK>
+    * ScheduledDate: Date
+    MaintenanceName: text
+    WorkingTime: number
+    WorkerNumber: number
+    HighPlaceWork: text
+    Outsource: number
+    AppointmentDate: Date
+    AppointmentPerson: text
+    CandidateDate1: Date
+    CandidateDate2: Date
+    Candidatedate3: Date
+    ScheduledDate: Date
+    AssignedEmployeeID: text <FK>
+    AssignedSubcontractorID: text <FK>
+    StartDate: Date
+    EndDate: Date
+    Notes: textarea
+    Attentions: textarea
+}
+entity Record {
+    * ID: text <Generated>
+    --
+    * Code: text <FK>
+    * Quantity: number
+    * Contractcode: text <FK>
+    * Place: text
+    * Height: text
+    Notes: textArea
+    Attentions: textArea
+}
+
+Contract ||--o{ TargetContractEquipment
+Contract |o--o{ PeriodicMaintenance
+Contract ||--o| Mst_Company
+Contract ||--o| Mst_Person
+@enduml

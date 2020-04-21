@@ -1,0 +1,93 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity Contract {
+    * ContractCode: text
+    --
+    * EstimateCode: text <FK>
+    TargetContractCode: <FK>
+    * ContractorID: text <FK>
+    * SiteName: text
+    * SiteAddress: text
+    LocationData: text
+    * BuildingType: text
+    * MonthlyFee: number
+    * ContractPeriod: number
+    * AutoRenewal: number
+    * ContractLimitMonth: number
+    * ContractDate: Date
+    * StartDate: Date
+    SuspensionDate: Date
+    SuspensionReason: textarea
+    ResumeDate: Date
+    EndDate: Date
+    EndReason: textarea
+    * OncallTimesPerYear: number
+    * ExpendableReplacement: number
+    * FiniteLifeItemReplacement: number
+    * FailureItemReplacement: number
+    * Outsource: number
+    TransportationFee: number
+    AccomodationFee: number
+    Notes: textarea
+    Attentions: textarea
+}
+' BuildingType: Office/ Factory/ Warehouse/ House/ Apartment/ Office building/ Store/ .. 
+entity TargetContractEquipment {
+    * ID: text <Generated>
+    --
+    * Code: text <FK>
+    * Quantity: number
+    * Contractcode: text <FK>
+    * Place: text
+    * Height: text
+    Notes: textArea
+    Attentions: textArea
+}
+' Height: Normal height/ Airial work platform/ Airial Work vehicle
+entity ContactPerson {
+    * ID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * Name: text
+    * Type: text
+    CompanyID: text <FK>
+    Department: text
+    Title: text
+    Tel: text
+    Email text
+    SMS: text
+    Notes: textarea
+    Attentions: textarea
+}
+' Type: Contract/ Emergency/ Appointment/ Habitant/ Security/ Employee
+entity ContractPeriodicMaintenance {
+    * ID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * Name: text
+    * Cycle: number
+    * StartMonth: number
+    * ServiceCleaning: number
+    * ServiceFunctionCheck: number
+    * ServicePerformanceTest: number
+    * ServiceSafetyCheck: number
+    * ServiceEnvironmentCheck: number
+    Notes: textarea
+}
+entity Mst_Company {
+    * ID: text <Generated>
+    --
+    * Name: text
+    * Address :text
+    Tel: text
+    Notes: textarea
+    Attentions: textarea
+}
+
+Contract ||--o{ TargetContractEquipment
+Contract |o--o{ ContractPeriodicMaintenance
+Contract ||--|{ ContactPerson
+Contract ||--o| Mst_Company
+@enduml

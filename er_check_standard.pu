@@ -1,0 +1,94 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity Mst_CheckStandard {
+    * ID: text <Generated>
+    --
+    * Code: text <FK>
+    ActionID: text <FK>
+    * Purpose: text
+    * Method: text
+    * Type: text
+    * Subject: text
+    * Description: textarea
+    FormerCode: text <FK>
+    FormerNumber: number
+    LatterCode: text <FK>
+    LatterNumer: number
+    Cycle: number
+    * Outsource: number
+    * WorkerNumber: number
+    * WorkingTime: Float
+    AdditonalCost: number
+    Unit: text
+    NormalRangeLow: Float
+    NormalRangeHigh: Float
+    KeyboardType: text
+    StartPeriod: Date
+    EndPeriod: Date
+    Notes: text
+}
+' Method: Cleaning/ Visual check/ Listening check/ Touching check/ Measurement/ Recording/ Replacement
+' Type: Check/ Measure/ Picture/ Upload/ Replacement
+entity Mst_CheckTool {
+    * StandardID: text <FK>
+    ToolID: text <FK>
+}
+entity Mst_CheckSupportDoc {
+    * StandardID: text <FK>
+    DocID: text <FK>
+}
+entity Mst_Equipment {
+    * Code: text <PK>
+    --
+    * Name: text
+    * Category: text
+    Image: image
+    Notes: text
+}
+' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply
+entity Mst_Actions{
+    * ID: text <Generated>
+    --
+    * Subject: text
+    * Description: textarea
+    * Purpose: text
+    * Method: text
+    * Type: text
+    Notes: text
+}
+entity Mst_Tools {
+    * ID: text <Generated>
+    --
+    * Name: text
+    Type: text
+    Image: image
+    Notes: text
+}
+' Type: Indivisual tool/ Shared tool/ Purchaising/ Rental
+entity Mst_Documents {
+    * ID: text <Generated>
+    --
+    * Subject: text
+    * Type: text
+    * URL: text
+    notes: text
+}
+' Type: Manual/ Instructions/ Checklist/ Contract/ Appearance/ Drawing
+entity Mst_Purpose {
+    * Name: text
+    --
+    Description: textarea
+    Priority: number
+}
+' Purpose: Cleaning/ Function check/ Performance test/ Safety check/ Environment check/ Prevention measures/ Repair
+
+Mst_CheckStandard |o--o{ Mst_Equipment
+Mst_CheckStandard |o--o{ Mst_CheckTool
+Mst_CheckStandard |o--o{ Mst_CheckSupportDoc
+Mst_CheckTool ||--o{ Mst_Tools
+Mst_CheckSupportDoc ||--o{ Mst_Documents
+Mst_CheckStandard }|--|{ Mst_Actions
+Mst_Actions ||--|| Mst_Purpose
+@enduml
