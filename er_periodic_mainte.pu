@@ -2,6 +2,12 @@
 hide circle
 skinparam linetype ortho
 
+entity ContractPeriodicMaintenance {
+    * ID: text
+    --
+    Cycle: number
+    StartMonth: number
+}
 entity MaintenanceSchedule {
     * ID: text <Generated>
     --
@@ -24,7 +30,7 @@ entity MaintenanceSchedule {
     Attentions: textarea
 }
 ' Status: Appointment/ assignment/ ScheduleFixed/ Pending/ Complete/ RemainingWork
-entity Maintenancechecklist {
+entity MaintenanceChecklist {
     * ID: text <Generated>
     --
     * ScheduleID: text <FK> 
@@ -36,18 +42,15 @@ entity Maintenancechecklist {
 entity MaintenanceRecord {
     * ChecklistID: text <FK>
     --
-    * Code: text <FK>
-    * Quantity: number
-    * Contractcode: text <FK>
-    * Place: text
-    * Height: text
+    ResultText: text
+    ResultImage: image
+    ResultFile: binary
+    Result: text
     Notes: textArea
     Attentions: textArea
 }
 
-
-Contract ||--o{ TargetContractEquipment
-Contract |o--o{ PeriodicMaintenance
-Contract ||--o| Mst_Company
-Contract ||--o| Mst_Person
+MaintenanceSchedule ||--|{ MaintenanceChecklist
+MaintenanceChecklist ||--|| MaintenanceRecord
+ContractPeriodicMaintenance ||--|{ MaintenanceSchedule
 @enduml
