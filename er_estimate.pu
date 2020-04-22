@@ -1,0 +1,134 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity Mst_EstimateBase {
+    AdministrativeExpenses: float
+    CostRate: float
+    FailureRate: float
+    TravelTimeInSite: number
+    UnitCostSubcon: number
+    UnitCostTechnician: number
+    WorkingHoursPerDay: number
+    AirialWorkPlatformTime: number
+    AirialWorkPlatformCost: number
+    AirialWorkVehicleTime: number
+    AirialWorkVehicleCost: number
+}
+entity EstimateInfo {
+    * EstimateID: text
+    --
+    * SiteName: text
+    * SiteAddress: text
+    * BuildingType: text
+    * MonthlyFee: number
+    * ContractPeriod: number
+    * AutoRenewal: number
+    * ContractLimitMonth: number
+    * ContractDate: Date
+    * OncallTimesPerYear: number
+    * ExpendableReplacement: number
+    * FiniteLifeItemReplacement: number
+    * FailureItemReplacement: number
+    * Outsource: number
+    TransportationFee: number
+    AccomodationFee: number
+    Notes: textarea
+    Attentions: textarea
+}
+entity EstPeriodicMaintenance {
+    * PeriodicMaintenanceID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * Name: text
+    * Cycle: number
+    * StartMonth: number
+    * ServiceCleaning: number
+    * ServiceFunctionCheck: number
+    * ServicePerformanceTest: number
+    * ServiceSafetyCheck: number
+    * ServiceEnvironmentCheck: number
+    AdditionalWork: text <FK>
+    Notes: textarea
+}
+entity EstTargetContract {
+    * ContractCode: text <FK>
+    --
+    System: text
+    ContractDate: Date
+    StartDate: Date
+    Status: Text
+}
+entity EstTargetContractEquipment {
+    * EquipmentID: text <Generated>
+    --
+    * Code: text <FK>
+    * Quantity: number
+    * Contractcode: text <FK>
+    * Place: text
+    * Height: text
+    Notes: textArea
+    Attentions: textArea
+}
+entity Mst_Equipment {
+    * Code: text
+    --
+    Name: text
+}
+entity EstContactPerson {
+    * ContactID: text <Generated>
+    --
+    * ContractCode: text <FK>
+    * Name: text
+    * Type: text
+    CompanyID: text <FK>
+    Department: text
+    Title: text
+    Tel: text
+    Email text
+    SMS: text
+    Notes: textarea
+    Attentions: textarea
+}
+entity Est_Company {
+    * CompanyID: text <Generated>
+    --
+    * Name: text
+    * Address :text
+    Tel: text
+    Notes: textarea
+    Attentions: textarea
+}
+entity EstQuotation {
+    * EstimateCode: text <FK>
+    --
+    EstimateID: text <FK>
+    CreationDate: Date
+    SubmitTo: text
+    SubmitFrom: text
+    DiscountType: text
+    DiscountValue: float
+    Details: textarea
+    TermsConditions
+    Notes: textarea
+    ApprovalDate: Date
+    ApprovedBy: text <FK>
+}
+entity Mst_TermsConditions {
+    * TermsID: text
+    --
+    * Subject: text
+    * Detail: textarea
+    * Default: number
+    * Priority: number 
+}
+
+EstimateInfo ||--o{ EstTargetContractEquipment
+EstimateInfo ||--o| Est_Company
+EstimateInfo |o--o{ EstPeriodicMaintenance
+EstimateInfo ||--|{ EstContactPerson
+EstTargetContract ||--o{ EstTargetContractEquipment
+EstTargetContractEquipment ||--|| Mst_Equipment
+EstQuotation }o--|| EstimateInfo
+EstQuotation ||--o{ Mst_TermsConditions
+@enduml

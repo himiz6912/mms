@@ -3,7 +3,7 @@ hide circle
 skinparam linetype ortho
 
 entity Mst_CheckStandard {
-    * ID: text <Generated>
+    * StandardID: text <Generated>
     --
     * Code: text <FK>
     ActionID: text <FK>
@@ -37,7 +37,7 @@ entity Mst_CheckTool {
 }
 entity Mst_CheckSupportDoc {
     * StandardID: text <FK>
-    DocID: text <FK>
+    DocumentID: text <FK>
 }
 entity Mst_Equipment {
     * Code: text <PK>
@@ -49,7 +49,7 @@ entity Mst_Equipment {
 }
 ' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply
 entity Mst_Actions{
-    * ID: text <Generated>
+    * ActionID: text <Generated>
     --
     * Subject: text
     * Description: textarea
@@ -59,7 +59,7 @@ entity Mst_Actions{
     Notes: text
 }
 entity Mst_Tools {
-    * ID: text <Generated>
+    * ToolID: text <Generated>
     --
     * Name: text
     Type: text
@@ -68,7 +68,7 @@ entity Mst_Tools {
 }
 ' Type: Indivisual tool/ Shared tool/ Purchaising/ Rental
 entity Mst_Documents {
-    * ID: text <Generated>
+    * DocumentID: text <Generated>
     --
     * Subject: text
     * Type: text
@@ -83,7 +83,7 @@ entity Mst_Purpose {
     Priority: number
 }
 ' Purpose: Cleaning/ Function check/ Performance test/ Safety check/ Environment check/ Prevention measures/ Repair
-
+' add Campaign and special check
 Mst_CheckStandard |o--o{ Mst_Equipment
 Mst_CheckStandard |o--o{ Mst_CheckTool
 Mst_CheckStandard |o--o{ Mst_CheckSupportDoc

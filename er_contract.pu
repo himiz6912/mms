@@ -2,12 +2,10 @@
 hide circle
 skinparam linetype ortho
 
-entity Contract {
-    * ContractCode: text
+entity ContractInfo {
+    * ContractCode: text <FK>
     --
     * EstimateCode: text <FK>
-    TargetContractCode: <FK>
-    * ContractorID: text <FK>
     * SiteName: text
     * SiteAddress: text
     LocationData: text
@@ -34,8 +32,16 @@ entity Contract {
     Attentions: textarea
 }
 ' BuildingType: Office/ Factory/ Warehouse/ House/ Apartment/ Office building/ Store/ .. 
+entity TargetContract {
+    * ContractCode: text <FK>
+    --
+    System: text
+    ContractDate: Date
+    StartDate: Date
+    Status: Text
+}
 entity TargetContractEquipment {
-    * ID: text <Generated>
+    * EquipmentID: text <Generated>
     --
     * Code: text <FK>
     * Quantity: number
@@ -46,8 +52,13 @@ entity TargetContractEquipment {
     Attentions: textArea
 }
 ' Height: Normal height/ Airial work platform/ Airial Work vehicle
+entity Mst_Equipment {
+    * Code: text
+    --
+    Name: text
+}
 entity ContactPerson {
-    * ID: text <Generated>
+    * ContactID: text <Generated>
     --
     * ContractCode: text <FK>
     * Name: text
@@ -63,7 +74,7 @@ entity ContactPerson {
 }
 ' Type: Contract/ Emergency/ Appointment/ Habitant/ Security/ Employee
 entity ContractPeriodicMaintenance {
-    * ID: text <Generated>
+    * PeriodicMaintenanceID: text <Generated>
     --
     * ContractCode: text <FK>
     * Name: text
@@ -74,10 +85,12 @@ entity ContractPeriodicMaintenance {
     * ServicePerformanceTest: number
     * ServiceSafetyCheck: number
     * ServiceEnvironmentCheck: number
+    AdditionalWork: text <FK>
     Notes: textarea
 }
+' AdditionalWork: array of CheckStandardID
 entity Mst_Company {
-    * ID: text <Generated>
+    * CompanyID: text <Generated>
     --
     * Name: text
     * Address :text
@@ -86,8 +99,10 @@ entity Mst_Company {
     Attentions: textarea
 }
 
-Contract ||--o{ TargetContractEquipment
-Contract |o--o{ ContractPeriodicMaintenance
-Contract ||--|{ ContactPerson
-Contract ||--o| Mst_Company
+ContractInfo ||--o{ TargetContractEquipment
+ContractInfo ||--o| Mst_Company
+ContractInfo |o--o{ ContractPeriodicMaintenance
+ContractInfo ||--|{ ContactPerson
+TargetContract ||--o{ TargetContractEquipment
+TargetContractEquipment ||--|| Mst_Equipment
 @enduml
