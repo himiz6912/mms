@@ -2,20 +2,20 @@
 hide circle
 skinparam linetype ortho
 
-entity Mst_CheckStandard {
+entity CheckStandard {
     * StandardID: text <Generated>
     --
     * Code: text <FK>
     ActionID: text <FK>
     * Purpose: text
-    * Method: text
-    * Type: text
+    Method: text
+    * CheckType: text
     * Subject: text
     * Description: textarea
     FormerCode: text <FK>
-    FormerNumber: number
+    FormerQuantity: number
     LatterCode: text <FK>
-    LatterNumer: number
+    LatterQuantity: number
     Cycle: number
     * Outsource: number
     * WorkerNumber: number
@@ -27,17 +27,17 @@ entity Mst_CheckStandard {
     KeyboardType: text
     StartPeriod: Date
     EndPeriod: Date
-    Notes: text
+    Notes: textarea
 }
 ' Method: Cleaning/ Visual check/ Listening check/ Touching check/ Measurement/ Recording/ Replacement
 ' Type: Check/ Measure/ Picture/ Upload/ Replacement
-entity Mst_CheckTool {
+entity CheckTool {
     * StandardID: text <FK>
-    ToolID: text <FK>
+    * ToolID: text <FK>
 }
-entity Mst_CheckSupportDoc {
+entity CheckSupportDoc {
     * StandardID: text <FK>
-    DocumentID: text <FK>
+    * DocumentID: text <FK>
 }
 entity Mst_Equipment {
     * Code: text <PK>
@@ -45,9 +45,10 @@ entity Mst_Equipment {
     * Name: text
     * Category: text
     Image: image
+    Price: number
     Notes: text
 }
-' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply
+' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply/ Battery
 entity Mst_Actions{
     * ActionID: text <Generated>
     --
@@ -55,27 +56,29 @@ entity Mst_Actions{
     * Description: textarea
     * Purpose: text
     * Method: text
-    * Type: text
+    * ActionType: text
     Notes: text
 }
+' ActionType: Equipment/ Contract/ Operation/ Environment/ Others
 entity Mst_Tools {
     * ToolID: text <Generated>
     --
     * Name: text
-    Type: text
+    ToolType: text
+    Description: textarea
     Image: image
-    Notes: text
+    Notes: textarea
 }
-' Type: Indivisual tool/ Shared tool/ Purchaising/ Rental
+' ToolType: Indivisual tool/ Shared tool/ Purchaising/ Rental
 entity Mst_Documents {
     * DocumentID: text <Generated>
     --
     * Subject: text
-    * Type: text
+    * DocumentType: text
     * URL: text
     notes: text
 }
-' Type: Manual/ Instructions/ Checklist/ Contract/ Appearance/ Drawing
+' DocumentType: Manual/ Instructions/ Checklist/ Contract/ Appearance/ Drawing
 entity Mst_Purpose {
     * Name: text
     --
@@ -84,11 +87,11 @@ entity Mst_Purpose {
 }
 ' Purpose: Cleaning/ Function check/ Performance test/ Safety check/ Environment check/ Prevention measures/ Repair
 ' add Campaign and special check
-Mst_CheckStandard |o--o{ Mst_Equipment
-Mst_CheckStandard |o--o{ Mst_CheckTool
-Mst_CheckStandard |o--o{ Mst_CheckSupportDoc
-Mst_CheckTool ||--o{ Mst_Tools
-Mst_CheckSupportDoc ||--o{ Mst_Documents
-Mst_CheckStandard }|--|{ Mst_Actions
+CheckStandard |o--o{ Mst_Equipment
+CheckStandard |o--o{ CheckTool
+CheckStandard |o--o{ CheckSupportDoc
+CheckTool ||--o{ Mst_Tools
+CheckSupportDoc ||--o{ Mst_Documents
+CheckStandard }|--|{ Mst_Actions
 Mst_Actions ||--|| Mst_Purpose
 @enduml

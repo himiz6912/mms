@@ -16,15 +16,16 @@ entity MaintenanceInfo {
     * PediodicMaintenanceName: text
     * WorkingTime: number
     * WorkerNumber: number
-    * Tools: text
+    Tools: text
     * HighPlaceWork: text
     * Outsource: number
     * ScheduledDate: Date
-    AppointDate: Date
-    AppointeTo: text
+    AppointmentDate: Date
+    AppointmentTo: text
     AssignedTeamID: text <FK>
+    Status: text
     Notes: textarea
-    Attentions: textarea
+    Attention: textarea
 }
 ' Status: Appointment/ assignment/ ScheduleFixed/ Pending/ Complete/ RemainingWork
 entity MaintenanceEvent {
@@ -34,7 +35,6 @@ entity MaintenanceEvent {
     * MaintenanceID: text <FK>
     InformedBy: text <FK>
     NotifyTo: text <FK>
-    Notification: text
     Notes: textarea
     EndDate: Date
     DueDate: Date
@@ -44,23 +44,24 @@ entity MaintenanceChecklist {
     * ChecklistID: text <Generated>
     --
     * MaintenanceID: text <FK> 
-    * EquipmentID: text <FK>
+    EquipmentID: text <FK>
     * StandardID: text <FK>
     * WorkingTime: number
     * WorkerNumber: number
     * HighPlaceWork: text
-    * Tools: text
+    Tools: text
     Notes: textarea
-    Attentions: textarea
+    Attention: textarea
 }
 entity PeriodicMaintenanceRecord {
     * ChecklistID: text <FK>
     --
     ReportedBy: text <FK>
-    ResultText: text
+    ResultFlag: number
     ResultImage: image
     ResultFile: binary
-    Result: text
+    ResultType: text
+    Report: textarea
     Notes: textArea
     StartDate: Date
     EndDate: Date
@@ -70,16 +71,19 @@ entity PeriodicMaintenanceRecord {
     RecEndLocation: text
     Duration: number
 }
+' ResultType: Completed/ Pending/ RemainingWork
 entity MaintenanceTeam {
     * TeamID: text <Generated>
     --
     * PersonnelID: text <FK>
     Leader: number
+    Notes: textarea
 }
 entity Personnel {
     * PersonnelID: text <Generated>
     --
     * Name: text
+    * PersonnelType: text
     Branch: text
     Department: text
     Title: text
@@ -89,20 +93,20 @@ entity Personnel {
     SMS: text
     Notes: textarea
 }
+' PersonnelType: Employee/ Subcon/ Vender/ Maker
 entity Subcontractor {
     * SubconID: text <Generated>
     --
-    * Company: text
-    Tel: text
-    Email: text
-    SMS: text
+    * CompanyName: text
+    * Address: text
+    * ContactPerson: text <FK>
     Notes: textarea
 }
 entity Qualification {
     * QualificationName: text <FK>
-    --
     * PersonnelID: text <FK>
     Expiration: Date
+    Notes: textarea
 }
 
 entity Mst_Qualification {
@@ -113,14 +117,11 @@ entity Mst_Qualification {
 }
 entity ServiceArea {
     * City: text
-    --
-    * Type: text
-    Branch: text <FK>
-    Department: text <FK>
-    PersonnelID: text <FK>
+    * AreaType: text
+    Name: text <FK>
     Notes: textarea
 }
-' Type: Branch/ Department/ Company/ PersonnelID
+' AreaType: Branch/ Department/ Company/ PersonnelID
 
 ContractPeriodicMaintenance ||--|{ MaintenanceInfo
 MaintenanceInfo ||--|{ MaintenanceChecklist
