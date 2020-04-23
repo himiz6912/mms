@@ -49,7 +49,7 @@ entity Mst_Equipment {
     Notes: text
 }
 ' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply/ Battery
-entity Mst_Actions{
+entity Actions{
     * ActionID: text <Generated>
     --
     * Subject: text

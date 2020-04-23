@@ -1,0 +1,79 @@
+@startuml
+
+[*] --> TopMenu
+TopMenu: Instructions
+TopMenu: Information
+TopMenu: ContractManagement
+TopMenu: MaintenanceManagement
+TopMenu: Statistics
+TopMenu: Registration
+
+TopMenu --> ContractManagement: Click Icon
+state ContractManagement {
+    [*] --> ContractList
+    ContractList --> ContractList: Search button
+    ContractList --> ContractDetails: Select card
+    ContractDetails --> UpdateInfo: Update button
+    UpdateInfo --> ContractDetails: Back button
+    ContractDetails --> ContractList: Back button
+}
+ContractManagement --> TopMenu: Back button
+
+TopMenu --> MaintenanceManagement: Click Icon
+state MaintenanceManagement {
+    [*] --> MaintenanceList
+    MaintenanceList --> MaintenanceList: Search button
+    MaintenanceList --> MaintenanceDetails: Select card
+    MaintenanceDetails --> MaintenanceList: Back button
+    MaintenanceDetails --> Appointment: Appoint button
+    Appointment --> MaintenanceDetails: Back button
+    Appointment --> Assignment: Next button
+    Assignment --> Appointment: Back button
+    Assignment --> MakeTeam: Team button
+    Assignment --> Confirmation: Next button
+    Confirmation --> Assignment: Back button
+    Confirmation --> Notification: Fix schedule button
+    MaintenanceDetails --> MapView: Map button
+    MapView --> MaintenanceDetails: Back button/ Select site
+    MaintenanceList --> MapView: Map button
+    MapView --> MaintenanceList: Back button
+}
+MaintenanceManagement --> TopMenu: Back button
+' MaintenanceDetails: MaintenanceInfo, Event, Checklsit, Record 
+
+TopMenu --> Statistics: Click Icon
+Statistics --> TopMenu: Back button
+
+TopMenu --> Registration: Click Icon
+state Registration {
+    [*] --> RegistrationMenu
+    RegistrationMenu --> Equipment
+    state Equipment {
+        [*] --> EquipmentData
+        [*] --> CheckStandard
+        [*] --> Tool
+        [*] --> Document
+        CheckStandard --> Tool
+        CheckStandard --> Document
+    }
+    RegistrationMenu --> Estimate
+    state Estimate {
+        [*] --> EstimateCondition
+        [*] --> TermsCondition
+        [*] --> MaintenanceCondition
+    }
+    RegistrationMenu --> Organization
+    state Organization {
+        [*] --> Personnel
+        [*] --> Subcontractor
+        [*] --> Company
+        [*] --> Qualification
+        Personnel --> Company
+        Personnel --> Qualification
+        Subcontractor --> Company
+        Subcontractor --> Personnel
+    }
+}
+Registration --> TopMenu: Back button
+' EquipmentData: EquipmentBase, CheckStandard, 
+@enduml

@@ -2,7 +2,7 @@
 hide circle
 skinparam linetype ortho
 
-entity Mst_EstimateBase {
+entity EstimateBase {
     AdministrativeExpenses: float
     CostRate: float
     FailureRate: float
@@ -16,16 +16,14 @@ entity Mst_EstimateBase {
     AirialWorkVehicleCost: number
 }
 entity EstimateInfo {
-    * EstimateID: text
+    * EstimateID: text <Generated>
     --
     * SiteName: text
     * SiteAddress: text
     * BuildingType: text
-    * MonthlyFee: number
     * ContractPeriod: number
     * AutoRenewal: number
     * ContractLimitMonth: number
-    * ContractDate: Date
     * OncallTimesPerYear: number
     * ExpendableReplacement: number
     * FiniteLifeItemReplacement: number
@@ -34,7 +32,28 @@ entity EstimateInfo {
     TransportationFee: number
     AccomodationFee: number
     Notes: textarea
-    Attentions: textarea
+    Attention: textarea
+}
+' EstimateID=1: Default setting
+entity TargetContract {
+    * ContractCode: text <FK>
+    --
+    System: text
+    ContractDate: Date
+    StartDate: Date
+    Status: Text
+}
+' for demo, actually use CMS of each company.
+entity EstTargetContractEquipment {
+    * EquipmentID: text <Generated>
+    --
+    * Code: text <FK>
+    * Quantity: number
+    * Contractcode: text <FK>
+    * Place: text
+    * Height: text
+    Notes: textArea
+    Attention: textArea
 }
 entity EstPeriodicMaintenance {
     * PeriodicMaintenanceID: text <Generated>
@@ -51,36 +70,18 @@ entity EstPeriodicMaintenance {
     AdditionalWork: text <FK>
     Notes: textarea
 }
-entity EstTargetContract {
-    * ContractCode: text <FK>
-    --
-    System: text
-    ContractDate: Date
-    StartDate: Date
-    Status: Text
-}
-entity EstTargetContractEquipment {
-    * EquipmentID: text <Generated>
-    --
-    * Code: text <FK>
-    * Quantity: number
-    * Contractcode: text <FK>
-    * Place: text
-    * Height: text
-    Notes: textArea
-    Attentions: textArea
-}
+' PeriodicMaintenanceID=1: Default setting
 entity Mst_Equipment {
     * Code: text
     --
     Name: text
 }
-entity EstContactPerson {
+entity ContactPerson {
     * ContactID: text <Generated>
     --
-    * ContractCode: text <FK>
+    ContractCode: text <FK>
     * Name: text
-    * Type: text
+    * ContactType: text
     CompanyID: text <FK>
     Department: text
     Title: text
@@ -88,39 +89,43 @@ entity EstContactPerson {
     Email text
     SMS: text
     Notes: textarea
-    Attentions: textarea
+    Attention: textarea
 }
-entity Est_Company {
+entity Company {
     * CompanyID: text <Generated>
     --
     * Name: text
     * Address :text
     Tel: text
     Notes: textarea
-    Attentions: textarea
 }
 entity EstQuotation {
-    * EstimateCode: text <FK>
+    * EstimateCode: text <Generated>
     --
-    EstimateID: text <FK>
-    CreationDate: Date
-    SubmitTo: text
-    SubmitFrom: text
+    * EstimateID: text <FK>
+    * CreationDate: Date
+    * SubmitTo: text
+    * SubmitFrom: text
+    * OriginalMonthlyFee: number
     DiscountType: text
     DiscountValue: float
-    Details: textarea
-    TermsConditions
+    DiscountReason: textarea
+    * ProposeMonthlyFee: number
+    * Details: textarea
+    * TermsConditions: textarea
     Notes: textarea
-    ApprovalDate: Date
+    ApprovedDate: Date
     ApprovedBy: text <FK>
 }
-entity Mst_TermsConditions {
+' DiscountType: Percentage/ Fixed fee/
+entity TermsConditions {
     * TermsID: text
     --
     * Subject: text
     * Detail: textarea
     * Default: number
     * Priority: number 
+    NOtes: textarea
 }
 
 EstimateInfo ||--o{ EstTargetContractEquipment

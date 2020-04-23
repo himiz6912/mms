@@ -41,6 +41,7 @@ entity TargetContract {
     StartDate: Date
     Status: Text
 }
+' for demo, actually use CMS of each company.
 entity TargetContractEquipment {
     * EquipmentID: text <Generated>
     --
@@ -53,25 +54,6 @@ entity TargetContractEquipment {
     Attention: textArea
 }
 ' Height: Normal height/ Airial work platform/ Airial Work vehicle
-entity Mst_Equipment {
-    * Code: text
-}
-entity ContactPerson {
-    * ContactID: text <Generated>
-    --
-    * ContractCode: text <FK>
-    * Name: text
-    * ContactType: text
-    CompanyID: text <FK>
-    Department: text
-    Title: text
-    Tel: text
-    Email text
-    SMS: text
-    Notes: textarea
-    Attention: textarea
-}
-' ContactType: Contract/ Emergency/ Appointment/ Habitant/ Security/ Employee
 entity ContractPeriodicMaintenance {
     * PeriodicMaintenanceID: text <Generated>
     --
@@ -88,7 +70,26 @@ entity ContractPeriodicMaintenance {
     Notes: textarea
 }
 ' AdditionalWork: array of CheckStandardID
-entity Mst_Company {
+entity Mst_Equipment {
+    * Code: text
+}
+entity ContactPerson {
+    * ContactID: text <Generated>
+    --
+    ContractCode: text <FK>
+    * Name: text
+    * ContactType: text
+    CompanyID: text <FK>
+    Department: text
+    Title: text
+    Tel: text
+    Email text
+    SMS: text
+    Notes: textarea
+    Attention: textarea
+}
+' ContactType: Contract/ Emergency/ Appointment/ Habitant/ Security/ Employee
+entity Company {
     * CompanyID: text <Generated>
     --
     * Name: text
