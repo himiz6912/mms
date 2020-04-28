@@ -3,13 +3,11 @@ hide circle
 skinparam linetype ortho
 
 entity CheckStandard {
-    * StandardID: text <Generated>
-    --
     * Code: text <FK>
-    ActionID: text <FK>
+    WorkID: text <FK>
     * Purpose: text
     Method: text
-    * CheckType: text
+    * ResultType: text
     * Subject: text
     * Description: textarea
     FormerCode: text <FK>
@@ -19,79 +17,70 @@ entity CheckStandard {
     Cycle: number
     * Outsource: number
     * WorkerNumber: number
-    * WorkingTime: Float
-    AdditonalCost: number
+    * WorkingTime: float
+    AdditonalCost: float
     Unit: text
-    NormalRangeLow: Float
-    NormalRangeHigh: Float
+    NormalRangeLow: float
+    NormalRangeHigh: float
     KeyboardType: text
     StartPeriod: Date
     EndPeriod: Date
     Notes: textarea
 }
-' Method: Cleaning/ Visual check/ Listening check/ Touching check/ Measurement/ Recording/ Replacement
-' Type: Check/ Measure/ Picture/ Upload/ Replacement
+' Method: Cleaning/ Visual check/ Listening check/ Touching check/ Measurement/ Recording/ Replacement/ Confirmation
+' ResultType: Check/ Measure/ TakePicture/ Upload/ Replace/ Apply/ Propose 
 entity CheckTool {
     * StandardID: text <FK>
     * ToolID: text <FK>
 }
-entity CheckSupportDoc {
+entity SupportDoc {
     * StandardID: text <FK>
     * DocumentID: text <FK>
 }
-entity Mst_Equipment {
+entity Equipment {
     * Code: text <PK>
     --
     * Name: text
     * Category: text
+    * Maker: text
     Image: image
-    Price: number
-    Notes: text
+    SymbolMark: image
+    * Price: float
+    Notes: textarea
 }
 ' Category: Camera/ Recorder/ Periferals/ Panel/ Display/ Sensor/ Mount/ Output/ Communicator/ Power supply/ Battery
-entity Actions{
-    * ActionID: text <Generated>
-    --
+entity Work{
     * Subject: text
+    --
     * Description: textarea
     * Purpose: text
     * Method: text
-    * ActionType: text
     Notes: text
 }
-' ActionType: Equipment/ Contract/ Operation/ Environment/ Others
-entity Mst_Tools {
-    * ToolID: text <Generated>
-    --
+' Purpose: Cleaning/ Function check/ Performance test/ Safety check/ Environment check/ Prevention measures/ Prevention measures/ Normalization/ Operation check
+' add Campaign and special check
+entity Tool {
     * Name: text
+    --
     ToolType: text
     Description: textarea
     Image: image
     Notes: textarea
 }
 ' ToolType: Indivisual tool/ Shared tool/ Purchaising/ Rental
-entity Mst_Documents {
-    * DocumentID: text <Generated>
-    --
+entity Document {
     * Subject: text
+    --
     * DocumentType: text
-    * URL: text
+    URL: text
     notes: text
 }
 ' DocumentType: Manual/ Instructions/ Checklist/ Contract/ Appearance/ Drawing
-entity Mst_Purpose {
-    * Name: text
-    --
-    Description: textarea
-    Priority: number
-}
-' Purpose: Cleaning/ Function check/ Performance test/ Safety check/ Environment check/ Prevention measures/ Repair
-' add Campaign and special check
-CheckStandard |o--o{ Mst_Equipment
+
+CheckStandard |o--o{ Equipment
 CheckStandard |o--o{ CheckTool
-CheckStandard |o--o{ CheckSupportDoc
-CheckTool ||--o{ Mst_Tools
-CheckSupportDoc ||--o{ Mst_Documents
-CheckStandard }|--|{ Mst_Actions
-Mst_Actions ||--|| Mst_Purpose
+CheckStandard |o--o{ SupportDoc
+CheckTool ||--o{ Tool
+SupportDoc ||--o{ Document
+CheckStandard }|--|{ Work
 @enduml
