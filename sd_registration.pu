@@ -1,43 +1,32 @@
 @startuml
 
-[*] --> TopMenu
-TopMenu: Instructions
-TopMenu: Information
-TopMenu: ContractManagement
-TopMenu: MaintenanceManagement
-TopMenu: Statistics
-TopMenu: Registration
+[*] --> ScreenTop
+ScreenTop --> ScreenMenu
+ScreenMenu --> ScreenRegTool
+ScreenMenu --> ScreenRegEquipmnent
+ScreenMenu --> ScreenRegDocument
+ScreenMenu --> ScreenRegWork
+ScreenMenu --> ScreenRegCheckStandard
+ScreenRegCheckStandard --> ScreenSelWork
+ScreenRegCheckStandard --> ScreenSelTool
+ScreenRegCheckStandard --> ScreenSelDocument
 
-TopMenu --> Registration: Click Icon
-state Registration {
-    [*] --> RegistrationMenu
-    RegistrationMenu --> Equipment
-    state Equipment {
-        [*] --> EquipmentData
-        [*] --> CheckStandard
-        [*] --> Tool
-        [*] --> Document
-        CheckStandard --> Tool
-        CheckStandard --> Document
-    }
-    RegistrationMenu --> Estimate
-    state Estimate {
-        [*] --> EstimateCondition
-        [*] --> TermsCondition
-        [*] --> MaintenanceCondition
-    }
-    RegistrationMenu --> Organization
-    state Organization {
-        [*] --> Personnel
-        [*] --> Subcontractor
-        [*] --> Company
-        [*] --> Qualification
-        Personnel --> Company
-        Personnel --> Qualification
-        Subcontractor --> Company
-        Subcontractor --> Personnel
-    }
+RegistrationMenu --> Estimate
+state Estimate {
+    [*] --> EstimateCondition
+    [*] --> TermsCondition
+    [*] --> MaintenanceCondition
 }
-Registration --> TopMenu: Back button
+RegistrationMenu --> Organization
+state Organization {
+    [*] --> Personnel
+    [*] --> Subcontractor
+    [*] --> Company
+    [*] --> Qualification
+    Personnel --> Company
+    Personnel --> Qualification
+    Subcontractor --> Company
+    Subcontractor --> Personnel
+}
 ' EquipmentData: EquipmentBase, CheckStandard, 
 @enduml
