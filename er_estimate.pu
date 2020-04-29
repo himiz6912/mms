@@ -3,6 +3,8 @@ hide circle
 skinparam linetype ortho
 
 entity EstimateBase {
+    Name: text
+    --
     AdministrativeExpenses: float
     CostRate: float
     FailureRate: float
@@ -71,7 +73,7 @@ entity EstPeriodicMaintenance {
     Notes: textarea
 }
 ' PeriodicMaintenanceID=1: Default setting
-entity Mst_Equipment {
+entity Equipment {
     * Code: text
     --
     Name: text
@@ -92,9 +94,8 @@ entity ContactPerson {
     Attention: textarea
 }
 entity Company {
-    * CompanyID: text <Generated>
-    --
     * Name: text
+    --
     * Address :text
     Tel: text
     Notes: textarea
@@ -119,21 +120,20 @@ entity EstQuotation {
 }
 ' DiscountType: Percentage/ Fixed fee/
 entity TermsConditions {
-    * TermsID: text
-    --
     * Subject: text
-    * Detail: textarea
+    --
+    * Description: textarea
     * Default: number
-    * Priority: number 
-    NOtes: textarea
+    * Order: number 
+    Notes: textarea
 }
 
 EstimateInfo ||--o{ EstTargetContractEquipment
-EstimateInfo ||--o| Est_Company
+EstimateInfo ||--o| Company
 EstimateInfo |o--o{ EstPeriodicMaintenance
 EstimateInfo ||--|{ EstContactPerson
 EstTargetContract ||--o{ EstTargetContractEquipment
-EstTargetContractEquipment ||--|| Mst_Equipment
+EstTargetContractEquipment ||--|| Equipment
 EstQuotation }o--|| EstimateInfo
-EstQuotation ||--o{ Mst_TermsConditions
+EstQuotation ||--o{ TermsConditions
 @enduml
