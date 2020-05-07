@@ -77,10 +77,10 @@ entity Document {
 }
 ' DocumentType: Manual/ Instructions/ Checklist/ Contract/ Appearance/ Drawing
 
-CheckStandard |o--o{ Equipment
-CheckStandard |o--o{ CheckTool
-CheckStandard |o--o{ SupportDoc
-CheckTool ||--o{ Tool
-SupportDoc ||--o{ Document
+Equipment ||--o{ CheckStandard
+Tool ||-d-|| CheckTool
+CheckTool }o-r-o| CheckStandard
+Document ||-d-o{ SupportDoc
+SupportDoc }o-l-o| CheckStandard
 CheckStandard }|--|{ Work
 @enduml

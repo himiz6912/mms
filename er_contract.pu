@@ -70,7 +70,7 @@ entity ContractPeriodicMaintenance {
     Notes: textarea
 }
 ' AdditionalWork: array of CheckStandardID
-entity Mst_Equipment {
+entity Equipment {
     * Code: text
 }
 entity ContactPerson {
