@@ -118,7 +118,7 @@ entity TermsConditions {
     * Subject: text
     --
     * Description: textarea
-    * Default: number
+    * Default: bool
     * Order: number 
     Notes: textarea
 }
