@@ -5,6 +5,8 @@ skinparam linetype ortho
 entity EstimateBase {
     Name: text
     --
+    Value: text
+    --
     AdministrativeExpenses: float
     CostRate: float
     FailureRate: float
@@ -16,27 +18,30 @@ entity EstimateBase {
     AirialWorkPlatformCost: number
     AirialWorkVehicleTime: number
     AirialWorkVehicleCost: number
+    DefaultAlarmPeriodicMaintenance: text <FK>
+    DefaultSalePeriodicMaintenance: text <FK>
 }
+' use key-value model because calculation method is different.
+
 entity EstimateInfo {
     * EstimateID: text <Generated>
     --
-    * SiteName: text
-    * SiteAddress: text
-    * BuildingType: text
+    * SiteID: text
     * ContractPeriod: number
-    * AutoRenewal: number
+    * AutoRenewal: bool
+    * RenewalPeriod: number
     * ContractLimitMonth: number
-    * OncallTimesPerYear: number
-    * ExpendableReplacement: number
-    * FiniteLifeItemReplacement: number
-    * FailureItemReplacement: number
-    * Outsource: number
+    * OncallTimes: number
+    * ExpendableReplacement: bool
+    * FiniteLifeItemReplacement: bool
+    * FailureItemReplacement: bool
+    * Outsource: bool
     TransportationFee: number
     AccomodationFee: number
     Notes: textarea
     Attention: textarea
 }
-' EstimateID=1: Default setting
+
 entity TargetContract {
     * ContractCode: text <FK>
     --
@@ -45,61 +50,50 @@ entity TargetContract {
     StartDate: Date
     Status: Text
 }
-' for demo, actually use CMS of each company.
+' It's for demo, actually use CMS of each company.
+
 entity EstTargetContractEquipment {
     * EquipmentID: text <Generated>
     --
     * Code: text <FK>
     * Quantity: number
-    * Contractcode: text <FK>
+    * ContractCode: text <FK>
     * Place: text
     * Height: text
     Notes: textArea
     Attention: textArea
 }
+' ContractCode can be set estimate code also.
+' Height: Normal height/ Airial work platform/ Airial Work vehicle
+
 entity EstPeriodicMaintenance {
-    * PeriodicMaintenanceID: text <Generated>
+   * PeriodicMaintenanceID: text <Generated>
     --
-    * ContractCode: text <FK>
     * Name: text
+    * ContractCode: text <FK>
     * Cycle: number
     * StartMonth: number
-    * ServiceCleaning: number
-    * ServiceFunctionCheck: number
-    * ServicePerformanceTest: number
-    * ServiceSafetyCheck: number
-    * ServiceEnvironmentCheck: number
+    * ServiceCleaning: bool
+    * ServiceFunctionCheck: bool
+    * ServicePerformanceTest: bool
+    * ServiceSafetyCheck: bool
+    * ServiceEnvironmentCheck: bool
     AdditionalWork: text <FK>
     Notes: textarea
 }
-' PeriodicMaintenanceID=1: Default setting
+
 entity Equipment {
     * Code: text
     --
     Name: text
 }
-entity ContactPerson {
-    * ContactID: text <Generated>
+
+entity HumanResource {
+    * ResourceID: text <FK>
     --
-    ContractCode: text <FK>
     * Name: text
-    * ContactType: text
-    CompanyID: text <FK>
-    Department: text
-    Title: text
-    Tel: text
-    Email text
-    SMS: text
-    Notes: textarea
-    Attention: textarea
 }
-entity Company {
-    * Name: text
-    --
-    * Address :text
-    Tel: text
-    Notes: textarea
-}
+
 entity EstQuotation {
     * EstimateCode: text <Generated>
     --
@@ -119,6 +113,7 @@ entity EstQuotation {
     ApprovedBy: text <FK>
 }
 ' DiscountType: Percentage/ Fixed fee/
+
 entity TermsConditions {
     * Subject: text
     --
@@ -128,12 +123,12 @@ entity TermsConditions {
     Notes: textarea
 }
 
-EstimateInfo ||--o{ EstTargetContractEquipment
-EstimateInfo ||--o| Company
-EstimateInfo |o--o{ EstPeriodicMaintenance
-EstimateInfo ||--|{ EstContactPerson
-EstTargetContract ||--o{ EstTargetContractEquipment
-EstTargetContractEquipment ||--|| Equipment
-EstQuotation }o--|| EstimateInfo
-EstQuotation ||--o{ TermsConditions
+Equipment }|-d-|{ EstTargetContractEquipment
+HumanResource }o--|| EstimateInfo
+EstimateInfo ||-l-|{ TargetContract
+EstTargetContractEquipment }|--|| TargetContract
+EstimateInfo ||--o{ EstPeriodicMaintenance
+TermsConditions }o--|| EstQuotation
+EstimateInfo ||-r-o{ EstQuotation
+
 @enduml

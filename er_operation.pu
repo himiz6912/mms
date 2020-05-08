@@ -2,12 +2,13 @@
 hide circle
 skinparam linetype ortho
 
-entity ContractPeriodicMaintenance {
+entity PeriodicMaintenance {
     * PeriodicMaintenanceID: text
     --
     Cycle: number
     StartMonth: number
 }
+
 entity MaintenanceInfo {
     * MaintenanceID: text <Generated>
     --
@@ -16,10 +17,10 @@ entity MaintenanceInfo {
     * PediodicMaintenanceName: text
     * WorkingTime: number
     * WorkerNumber: number
-    Tools: text
     * HighPlaceWork: text
     * Outsource: number
     * ScheduledDate: Date
+    CheckTool: text <FK>
     AppointmentDate: Date
     AppointmentTo: text
     AssignedTeamID: text <FK>
@@ -28,6 +29,7 @@ entity MaintenanceInfo {
     Attention: textarea
 }
 ' Status: Appointment/ assignment/ ScheduleFixed/ Pending/ Complete/ RemainingWork
+
 entity MaintenanceEvent {
     * EventID: text <Generated>
     --
@@ -40,6 +42,7 @@ entity MaintenanceEvent {
     DueDate: Date
 }
 ' EventType: Generated/ Appoint/ Assign/ FixSchedule/ StartPM/ SubmitQtn
+
 entity MaintenanceChecklist {
     * ChecklistID: text <Generated>
     --
@@ -53,6 +56,7 @@ entity MaintenanceChecklist {
     Notes: textarea
     Attention: textarea
 }
+
 entity PeriodicMaintenanceRecord {
     * ChecklistID: text <FK>
     --
@@ -72,39 +76,40 @@ entity PeriodicMaintenanceRecord {
     Duration: number
 }
 ' ResultType: Completed/ Pending/ RemainingWork
+
 entity MaintenanceTeam {
     * TeamID: text <Generated>
     --
-    * PersonnelID: text <FK>
-    Leader: number
+    * ResourceID: text <FK>
+    Leader: bool
     Notes: textarea
 }
-entity Personnel {
-    * PersonnelID: text <Generated>
+
+entity HumanResource {
+    * ResourceID: text <Generated>
     --
     * Name: text
-    * PersonnelType: text
-    Branch: text
-    Department: text
-    Title: text
-    SubconID: text <FK>
-    Tel: text
+    * ResourceType: text
+    Address: text
+    LocationData: text
+    Telephone1: text
+    Telephone2: text
     Email: text
     SMS: text
     Notes: textarea
 }
-' PersonnelType: Employee/ Subcon/ Vender/ Maker
-entity Subcontractor {
-    * SubconID: text <Generated>
-    --
-    * CompanyName: text
-    * Address: text
-    * ContactPerson: text <FK>
+' ResourceType: Group/ Individual
+
+entity Relationship {
+    * ResourceID: text <FK>
+    * RelationshipWith: text <FK>
+    * RelationshipType; text
     Notes: textarea
 }
+
 entity Qualification {
     * QualificationName: text <FK>
-    * PersonnelID: text <FK>
+    * ResourceID: text <FK>
     Expiration: Date
     Notes: textarea
 }
@@ -115,23 +120,22 @@ entity Mst_Qualification {
     Description: textarea
     Notes: textarea
 }
+
 entity ServiceArea {
+    * ResourceID: text <FK>
     * City: text
-    * AreaType: text
-    Name: text <FK>
     Notes: textarea
 }
-' AreaType: Branch/ Department/ Company/ PersonnelID
 
-ContractPeriodicMaintenance ||--|{ MaintenanceInfo
-MaintenanceInfo ||--|{ MaintenanceChecklist
-PeriodicMaintenanceRecord ||--|| MaintenanceChecklist
+PeriodicMaintenance }o-r-|| MaintenanceInfo
+MaintenanceInfo ||-r-|{ MaintenanceChecklist
+MaintenanceChecklist ||-u-|| PeriodicMaintenanceRecord
 MaintenanceInfo ||--o{ MaintenanceEvent
-MaintenanceInfo ||--|| MaintenanceTeam
-MaintenanceTeam }|--o{ Personnel
-Personnel ||--o| Subcontractor
-Personnel }o--o{ Qualification
-Qualification }o--o{ Mst_Qualification
-Personnel }o--o{ ServiceArea
-Subcontractor }o--o{ ServiceArea
+Relationship }|--|| HumanResource
+ServiceArea }o-l-|| HumanResource
+HumanResource }|-d-|{ MaintenanceTeam
+Mst_Qualification }|--|| Qualification
+Qualification }o-r-|| HumanResource
+MaintenanceTeam ||--|| MaintenanceInfo
+
 @enduml

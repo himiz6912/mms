@@ -6,33 +6,41 @@ entity ContractInfo {
     * ContractCode: text <FK>
     --
     * EstimateCode: text <FK>
-    * SiteName: text
-    * SiteAddress: text
-    LocationData: text
-    * BuildingType: text
+    * ContractID: text <FK>
+    * SiteID: text <FK>
     * MonthlyFee: number
     * ContractPeriod: number
-    * AutoRenewal: number
+    * AutoRenewal: bool
     * RenewalPeriod: number
     * ContractLimitMonth: number
     * ContractDate: Date
     * StartDate: Date
-    SuspensionDate: Date
-    SuspensionReason: textarea
-    ResumeDate: Date
-    EndDate: Date
-    EndReason: textarea
+    * Status: text
     * OncallTimes: number
-    * ExpendableReplacement: number
-    * FiniteLifeItemReplacement: number
-    * FailureItemReplacement: number
-    * Outsource: number
+    * ExpendableReplacement: bool
+    * FiniteLifeItemReplacement: bool
+    * FailureItemReplacement: bool
+    * Outsource: bool
     TransportationFee: number
     AccomodationFee: number
     Notes: textarea
     Attention: textarea
 }
 ' BuildingType: Office/ Factory/ Warehouse/ House/ Apartment/ Office building/ Store/ .. 
+
+entity ContractEvent {
+    * EventID: text <Generated>
+    --
+    * EventType: text
+    * ContractCode: text <FK>
+    InformedBy: text <FK>
+    NotifyTo: text <FK>
+    Notes: textarea
+    EndDate: Date
+    DueDate: Date
+}
+' EventType: Generated/ ChangeCondition/ Suspension/ Resume/ Termination
+
 entity TargetContract {
     * ContractCode: text <FK>
     --
@@ -41,7 +49,8 @@ entity TargetContract {
     StartDate: Date
     Status: Text
 }
-' for demo, actually use CMS of each company.
+' It's for demo, actually use CMS of each company.
+
 entity TargetContractEquipment {
     * EquipmentID: text <Generated>
     --
@@ -54,54 +63,40 @@ entity TargetContractEquipment {
     Attention: textArea
 }
 ' Height: Normal height/ Airial work platform/ Airial Work vehicle
-entity ContractPeriodicMaintenance {
+
+entity PeriodicMaintenance {
     * PeriodicMaintenanceID: text <Generated>
     --
-    * ContractCode: text <FK>
     * Name: text
+    * ContractCode: text <FK>
     * Cycle: number
     * StartMonth: number
-    * ServiceCleaning: number
-    * ServiceFunctionCheck: number
-    * ServicePerformanceTest: number
-    * ServiceSafetyCheck: number
-    * ServiceEnvironmentCheck: number
+    * ServiceCleaning: bool
+    * ServiceFunctionCheck: bool
+    * ServicePerformanceTest: bool
+    * ServiceSafetyCheck: bool
+    * ServiceEnvironmentCheck: bool
     AdditionalWork: text <FK>
     Notes: textarea
 }
 ' AdditionalWork: array of CheckStandardID
+
 entity Equipment {
     * Code: text
 }
-entity ContactPerson {
-    * ContactID: text <Generated>
-    --
-    ContractCode: text <FK>
-    * Name: text
-    * ContactType: text
-    CompanyID: text <FK>
-    Department: text
-    Title: text
-    Tel: text
-    Email text
-    SMS: text
-    Notes: textarea
-    Attention: textarea
-}
-' ContactType: Contract/ Emergency/ Appointment/ Habitant/ Security/ Employee
-entity Company {
-    * CompanyID: text <Generated>
+
+entity HumanResource {
+    * ResourceID: text <Generated>
     --
     * Name: text
-    * Address :text
-    Tel: text
-    Notes: textarea
+    Address: text
 }
 
-ContractInfo ||--o{ TargetContractEquipment
-ContractInfo ||--o| Mst_Company
-ContractInfo |o--o{ ContractPeriodicMaintenance
-ContractInfo ||--|{ ContactPerson
-TargetContract ||--o{ TargetContractEquipment
-TargetContractEquipment ||--|| Mst_Equipment
+HumanResource }|--|| ContractInfo
+TargetContract ||-d-o{ TargetContractEquipment
+Equipment ||-u-|{ TargetContractEquipment
+TargetContractEquipment }o-r-|| ContractInfo
+ContractInfo |o-r-o{ PeriodicMaintenance
+ContractInfo ||--|{ ContractEvent
+
 @enduml

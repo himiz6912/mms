@@ -3,6 +3,8 @@ hide circle
 skinparam linetype ortho
 
 entity CheckStandard {
+    * StandardID: text <Generated>
+    --
     * Code: text <FK>
     WorkID: text <FK>
     * Purpose: text
