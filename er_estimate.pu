@@ -5,7 +5,10 @@ skinparam linetype ortho
 entity EstimateBase {
     Name: text
     --
+    Description: textarea
     Value: text
+    Notes: textarea
+    Status: bool
     --
     AdministrativeExpenses: float
     CostRate: float
@@ -18,8 +21,12 @@ entity EstimateBase {
     AirialWorkPlatformCost: number
     AirialWorkVehicleTime: number
     AirialWorkVehicleCost: number
-    DefaultAlarmPeriodicMaintenance: text <FK>
-    DefaultSalePeriodicMaintenance: text <FK>
+    DefaultContractConditionForAlarm: text <FK>
+    DefaultContractConditionForCCTV: text <FK>
+    DefaultContractConditionForACCESS: text <FK>
+    DefaultPeriodicMaintenanceForAlarm: text <FK>
+    DefaultPeriodicMaintenanceForCCTV: text <FK>
+    DefaultPeriodicMaintenanceForACCESS: text <FK>
 }
 ' use key-value model because calculation method is different.
 
@@ -49,6 +56,12 @@ entity TargetContract {
     ContractDate: Date
     StartDate: Date
     Status: Text
+}
+entity DummyContractEquipment {
+    * Code: text <FK>
+    --
+    Quantity: number
+    ContractCode: text <FK>
 }
 ' It's for demo, actually use CMS of each company.
 
@@ -124,9 +137,11 @@ entity TermsConditions {
 }
 
 Equipment }|-d-|{ EstTargetContractEquipment
+Equipment }|-d-|{ DummyContractEquipment
 HumanResource }o--|| EstimateInfo
 EstimateInfo ||-l-|{ TargetContract
 EstTargetContractEquipment }|--|| TargetContract
+DummyContractEquipment }|--|| TargetContract
 EstimateInfo ||--o{ EstPeriodicMaintenance
 TermsConditions }o--|| EstQuotation
 EstimateInfo ||-r-o{ EstQuotation

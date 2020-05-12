@@ -1,0 +1,60 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity HumanResource {
+    * ResourceID: GUID <Generated>
+    --
+    * Name: text
+    Tel: text
+    Email: text
+}
+
+entity Terminal {
+    * TerminalID: GUID <Generated>
+    --
+    * Name: text
+    * TerminalType: text
+    Account: text <FK>
+    tel: text
+}
+' TerminalType: iPhone/ Android phone/ iPad/ Android tablet 
+
+entity TaskList {
+    * TaskID: GUID <Generated>
+    --
+    * TaskType: text <FK>
+    * SiteID: text <FK>
+    * Subject: text
+    * Content: textarea
+    DueDate: date
+    StartDate: date
+    Enddate: date
+    HandledBy: text <FK>
+    ConfirmedBy: text <FK>
+}
+' TaskType: EmergencyDispatch/ PeriodicMaintenance/ Troubleshooting/ Patrol/ Meeting
+
+entity History {
+    * HistoryID: GUID <Generated>
+    --
+    * TaskID: text <FK>
+    * NotificationType: text <FK>
+    * NotifyFrom: text <FK>
+    * NotifyTo: text <FK>
+    * Notes: textarea
+    Location: text
+}
+' NotificationType: Order/ ChangeOrder/ ReplyAccept/ ReplyDeny/ ReportSuccess/ ReportFail/ PeriodicReport/
+
+entity Site {
+    * SiteID: GUID <Generated>
+    --
+    * Name: text
+    * Address: text
+    Notes: textarea
+}
+
+TaskList ||--|{ History
+
+@enduml

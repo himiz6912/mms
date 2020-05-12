@@ -8,6 +8,7 @@ entity ContractInfo {
     * EstimateCode: text <FK>
     * ContractID: text <FK>
     * SiteID: text <FK>
+    * ContractHolder: text <FK>
     * MonthlyFee: number
     * ContractPeriod: number
     * AutoRenewal: bool
@@ -44,10 +45,17 @@ entity ContractEvent {
 entity TargetContract {
     * ContractCode: text <FK>
     --
+    ContractName: text
     System: text
     ContractDate: Date
     StartDate: Date
     Status: Text
+}
+entity DummyContractEquipment {
+    * Code: text <FK>
+    --
+    Quantity: number
+    ContractCode: text <FK>
 }
 ' It's for demo, actually use CMS of each company.
 
@@ -85,6 +93,21 @@ entity Equipment {
     * Code: text
 }
 
+entity Customer {
+    * ResourceID: text <Generated>
+    --
+    * Name: text
+    * CustomerType: text
+    Address: text
+    LocationData: text
+    Telephone1: text
+    Telephone2: text
+    Email: text
+    SMS: text
+    Notes: textarea
+}
+' ResourceType: Company/ Individual
+
 entity HumanResource {
     * ResourceID: text <Generated>
     --
@@ -93,8 +116,10 @@ entity HumanResource {
 }
 
 HumanResource }|--|| ContractInfo
-TargetContract ||-d-o{ TargetContractEquipment
-Equipment ||-u-|{ TargetContractEquipment
+DummyContractEquipment }o--|| TargetContract
+TargetContractEquipment }o--|| TargetContract
+Equipment ||-d-|{ DummyContractEquipment
+Equipment ||-d-|{ TargetContractEquipment
 TargetContractEquipment }o-r-|| ContractInfo
 ContractInfo |o-r-o{ PeriodicMaintenance
 ContractInfo ||--|{ ContractEvent
