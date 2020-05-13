@@ -29,9 +29,21 @@ PowerAPPsアプリによりこれまでの車両GPSと違った対応ができ�
 2. タスク管理: 全てのタスクリストを表示する。
 3. タスク登録: タスクを登録する。未割当のタスクを要員に割り当てる。緊急指示は即時に緊急指示をする。
 
+#### 機能概要
+
+1. デスクトップアプリでタスクを登録する。
+2. FLOWを使用し、TaskListエンティティの更新をトリガーとして、Eventエンティティを自動生成する。
+3. イベント”Order”または"Change Order"については、FLOWを使用し、Eventエンティティの更新をトリガーとして、モバイルアプリ通知を行う。
+4. モバイルアプリはTaskエンティティの更新操作を行う。更新時は位置情報を取得し合わせてEventエンティティに応答イベントとともに登録する。
+5. デスクトップアプリから対応者別の軌跡をマップ上に表示する。（OSMを使用）
+
 #### Entity
 
 1. HumanResource: 要員リスト
 2. Terminal: 端末リスト
 3. TaskList: タスク一覧
-4. History: 一連の履歴
+4. Event: 一連の履歴
+5. Site: 物件情報
+
+EventType: 新規作成、内容変更、要員割当、了承、拒否、完了報告、未完了報告、対応延期報告
+Initial/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending

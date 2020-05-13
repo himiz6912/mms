@@ -25,31 +25,34 @@ entity TaskList {
     --
     * TaskType: text <FK>
     * SiteID: text <FK>
+    * SiteName: text <FK>
+    * SiteAddress: text <FK>
     * Subject: text
     * Content: textarea
+    ResponseDate: date
     DueDate: date
-    StartDate: date
-    Enddate: date
-    HandledBy: text <FK>
-    ConfirmedBy: text <FK>
+    AssignedTo: text <FK>
+    Status: text <FK>
 }
 ' TaskType: EmergencyDispatch/ PeriodicMaintenance/ Troubleshooting/ Patrol/ Meeting
+' Status: Created/ Assigned/ Ongoing/ Completed/ Pending/
 
-entity History {
-    * HistoryID: GUID <Generated>
+entity Event {
+    * EventID: GUID <Generated>
     --
     * TaskID: text <FK>
-    * NotificationType: text <FK>
-    * NotifyFrom: text <FK>
-    * NotifyTo: text <FK>
-    * Notes: textarea
+    * EventType: text <FK>
+    NotifyFrom: text <FK>
+    Notes: textarea
+    UpdatedTo: date
     Location: text
 }
-' NotificationType: Order/ ChangeOrder/ ReplyAccept/ ReplyDeny/ ReportSuccess/ ReportFail/ PeriodicReport/
+' EventType: Initial/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending/ PeriodicReport
 
 entity Site {
     * SiteID: GUID <Generated>
     --
+    ContractCode: text
     * Name: text
     * Address: text
     Notes: textarea
