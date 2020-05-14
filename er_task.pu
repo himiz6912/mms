@@ -20,6 +20,14 @@ entity Terminal {
 }
 ' TerminalType: iPhone/ Android phone/ iPad/ Android tablet 
 
+entity Post {
+    * PostID: GUID <Generated>
+    --
+    * Name: text
+    ResourceID: text <FK>
+    TerminalID: text <FK>
+}
+
 entity TaskList {
     * TaskID: GUID <Generated>
     --
@@ -32,6 +40,7 @@ entity TaskList {
     ResponseDate: date
     DueDate: date
     AssignedTo: text <FK>
+    AssignedID: text <FK>
     Status: text <FK>
 }
 ' TaskType: EmergencyDispatch/ PeriodicMaintenance/ Troubleshooting/ Patrol/ Meeting
@@ -42,12 +51,12 @@ entity Event {
     --
     * TaskID: text <FK>
     * EventType: text <FK>
-    NotifyFrom: text <FK>
+    CreatedBy: text <FK>
+    CreatedOn: date
     Notes: textarea
-    UpdatedTo: date
     Location: text
 }
-' EventType: Initial/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending/ PeriodicReport
+' EventType: Create/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending/ PeriodicReport
 
 entity Site {
     * SiteID: GUID <Generated>
