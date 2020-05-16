@@ -41,9 +41,46 @@ PowerAPPsアプリによりこれまでの車両GPSと違った対応ができ�
 
 1. HumanResource: 要員リスト
 2. Terminal: 端末リスト
-3. TaskList: タスク一覧
-4. Event: 一連の履歴
-5. Site: 物件情報
+3. Post:　配置
+4. TaskList: タスク一覧
+5. Event: 一連の履歴
+6. Site: 物件情報
 
 EventType: 新規作成、内容変更、要員割当、了承、拒否、完了報告、未完了報告、対応延期報告
-Initial/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending
+Initial/ UpdateContent/ UpdateTime/ Allocate/ ReportAccept/ ReportReject/ ReportSuccess/ ReportFailue/ Pending
+
+登録されたタスクに対する操作はすべてイベントとしてEventエンティティに記録される。
+基本として、登録者＝ログインユーザー、登録日時＝現時刻とし、レコード編集時はレコードの作成、更新日時を使用する。
+モバイルアプリからは位置情報LocationDataを追加する。
+
+- 新規事案登録時、イベント”Create”、登録者＝ログインユーザー、登録日時＝レコードの作成日時、内容＝全項目のJSON
+- 内容変更時、イベント”Update”、登録者＝ログインユーザー、登録日時＝レコードの更新日時、内容＝全項目のJSON
+- 要員割当時、イベント”Assign”、登録者＝ログインユーザー、登録日時＝現時刻、内容＝割り当てたユーザーID
+- 了解又は拒否時、イベント”Accept”または”Reject”、登録者＝ログインユーザー、登録日時＝現時刻、内容＝アプリで入力した内容
+- 報告時、イベント”Report*”、登録者＝ログインユーザー、登録日時＝現時刻、内容＝アプリで入力した内容
+- 終了確認時、イベント”Confirm”、登録者＝ログインユーザー、登録日時＝現時刻
+- 対応開始後（Report*登録後）に対応が延期となった場合、新たな事案を作成する。イベント”Pending”、内容＝アプリで入力した内容
+- 経過時間報告として、”ReportStart”から”ReportSuccess”または”ReportFail”までは30分毎に位置情報をイベント”PeriodicReport”として登録する。登録者＝”ReportStart”したユーザー、登録日時＝現時刻、内容＝無し
+
+#### Statusについて
+
+画面上、イベントの状況からSTATUSを追加して表示する。これにより、対応優先順位を制御する。
+
+|Situation|Status|Remarks|
+|--|--|--|
+|Createから、Assignが登録されるまで|Created||
+|Assignから、ReportAcceptが登録されるまで|Arranging||
+|ReportAcceptからReportSuccess、ReportFailが登録されるまで|Ongoing||
+|ReportSuccess、ReportFail登録後、Confirmが登録された|Completed||
+|ReportPendingが登録され、Confirmが登録された|Pending||
+|Ongoing後、ReportPendingとなった場合|Arranging||
+Status: Created/ Arranging/ Ongoing/ Completed/ Pending/
+
+#### Mobile App
+
+1. 起動後、Postエンティティを確認し、自動ログインする。（loginuserにResourceIDをセット）
+2. 割当てられたが未確認の事案（TasklistエンティティのAssignedIDに自身がセットされ、かつ未完了の事案のうち、Eventエンティティで自身がAssignされたレコードの方が新しいタスク）をAssignedタスクとして表示する。
+3. Accept/Rejectを登録する。Reject時は理由を登録する。位置情報を追加してEventエンティティを更新する。
+4. 
+
+ログイン画面を表示する

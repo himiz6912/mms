@@ -39,12 +39,10 @@ entity TaskList {
     * Content: textarea
     ResponseDate: date
     DueDate: date
-    AssignedTo: text <FK>
-    AssignedID: text <FK>
     Status: text <FK>
 }
 ' TaskType: EmergencyDispatch/ PeriodicMaintenance/ Troubleshooting/ Patrol/ Meeting
-' Status: Created/ Assigned/ Ongoing/ Completed/ Pending/
+' Status: Created/ Arranging/ Ongoing/ Completed/ Pending/
 
 entity Event {
     * EventID: GUID <Generated>
@@ -56,7 +54,7 @@ entity Event {
     Notes: textarea
     Location: text
 }
-' EventType: Create/ UpdateContent/ UpdateTime/ Allocate/ Accept/ Reject/ ReportSuccess/ ReportFailue/ Pending/ PeriodicReport
+' EventType: Create/ Update/ Assign/ Accept/ Reject/ ReportStart/ ReportSuccess/ ReportFail/ ReportPending/ Confirm/ PeriodicReport
 
 entity Site {
     * SiteID: GUID <Generated>
