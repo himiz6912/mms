@@ -71,16 +71,61 @@ Initial/ UpdateContent/ UpdateTime/ Allocate/ ReportAccept/ ReportReject/ Report
 |Createから、Assignが登録されるまで|Created||
 |Assignから、ReportAcceptが登録されるまで|Arranging||
 |ReportAcceptからReportSuccess、ReportFailが登録されるまで|Ongoing||
-|ReportSuccess、ReportFail登録後、Confirmが登録された|Completed||
+|ReportSuccess、ReportFailure登録後、Confirmが登録された|Completed||
 |ReportPendingが登録され、Confirmが登録された|Pending||
 |Ongoing後、ReportPendingとなった場合|Arranging||
-Status: Created/ Arranging/ Ongoing/ Completed/ Pending/
+Status: Created/ Arranging/ Ongoing/ Responded/ finished/ Pending/
 
 #### Mobile App
 
 1. 起動後、Postエンティティを確認し、自動ログインする。（loginuserにResourceIDをセット）
 2. 割当てられたが未確認の事案（TasklistエンティティのAssignedIDに自身がセットされ、かつ未完了の事案のうち、Eventエンティティで自身がAssignされたレコードの方が新しいタスク）をAssignedタスクとして表示する。
-3. Accept/Rejectを登録する。Reject時は理由を登録する。位置情報を追加してEventエンティティを更新する。
-4. 
+3. 受諾した場合、イベントAcceptをEventエンティティに登録し、TasklistエンティティのステータスをOngoingにする。
+4. 拒否する場合、Rejectを登録する。Reject時はTextboxに理由を登録する。
+5. 対応開始時は、Tasklistから対象タスクを選択し、タスク開始を選択する。
+6. タスク開始を開始時に入力してもしなくても、最終的にタスク終了時には開始時刻、終了登録と事案継続の有無を登録する。
+7. タスクの事案継続無し、正常化、事案終了の場合はReportSuccessをEventエンティティに登録する。
+8. タスクを正常化できず、ただし事案継続不要の場合、理由をTextboxに入力の上、ReportFailureをEventエンティティに登録する。
+9. 事案継続となる場合は、ReportPendingを送信する。Pendingの場合も理由の入力は必須。
+10. いずれも対応開始後の報告登録はすべて位置情報をイベントに送信する。
+11. 対応開始時に開始操作を行っていた場合は、その後対応完了登録するまで30分間隔で位置情報を定時連絡として登録する。
 
-ログイン画面を表示する
+#### Desktop App
+
+アプリで実施すること：
+1. 受諾済みの未完了タスクに問題はないか
+    - 対応日は確定しているか
+    - 対応者はアサインできているか
+    - アサインした対応者は了承しているか
+
+2. 対応結果に問題はないか
+    - 対応時間に未開始となっていないか（遅刻、対応漏れ）
+    - 対応時間が多く掛かっていないか
+    - 対応正常完了済み、未確認物件の確認
+    - 問題ありで対応完了している物件の対応フォロー
+
+3. 品質向上のための統計情報
+    - 配置人数、対応者スキルに課題はないか（未完了が多い、遅刻が多いなど）
+    - 対応フローに問題はないか（対応期限が短い、対応日調整がされていないなど）
+
+4. 対応不備に対する指導目的
+    - 特定の対応者の遅刻が多い
+    - 特定の対応者の対応数が少ない
+    - 特定の対応者の対応時間が長い
+
+対応期限1週間前にステータスがOngoingとなっていないものを上位に赤色で表示する
+ステータスがArrangingのものは黄色で表示する。（期限1週間前は赤色）
+対応時間30分前にPUSH通知をする。（Mobile App)
+対応時間になってもReportStartを受信していないタスクは赤色で表示する
+ReportStartから30分経過毎にPUSH通知をする。（Mobile App）
+ReportStart受信時、位置情報と物件位置がアンマッチの場合は赤字で表示する。
+ReportStartから1時間経過してもReportSuccess/ReportFailureの受信のないタスクは赤色で表示する。
+ReportSuccess/ReportFailure/ReportPendingを受信したタスクは黄色表示として、内容確認を促す。
+地域別の対応種類、対応予定日時と開始時刻の差を正規分布図（横軸：時間、縦軸：回数、対応日時は別に選択）で表す。
+要員別の対応予定日時の開始時刻の差を″
+要員別の対応経過時間と対応数を散布図で表示（横軸：対応日時、縦軸:対応経過時間）
+
+
+開始ｰ終了間に終了したTasklistの終了日別のTaskType別の件数表
+1. StatusがFinishedのtasklistにEventからEventTypeがReportSuccess/ReportFailureのCreatedOnをマージする
+2. 1.のtableからShowcolumnsを使い、カラムをDate,EmergencyDispatch,Troubleshoot...としてその件数をセットする。

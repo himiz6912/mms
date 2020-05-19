@@ -41,7 +41,7 @@ entity TaskList {
     DueDate: date
     Status: text <FK>
 }
-' TaskType: EmergencyDispatch/ PeriodicMaintenance/ Troubleshooting/ Patrol/ Meeting
+' TaskType: Maintenance/ Troubleshooting/ Meeting/ WorkInspection
 ' Status: Created/ Arranging/ Ongoing/ Completed/ Pending/
 
 entity Event {
