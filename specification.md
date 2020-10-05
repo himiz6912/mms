@@ -23,6 +23,20 @@
 
 #### Entity
 
+OMS_Dummy_Contract_Data_1 (MMS_SIMS_Dummy_Data_1)
+OMS_Dummy_Contract_Data_2 (MMS_SIMS_Dummy_Data_2)
+
+MMS_SIMS_dummy_data_1 --> OMS_dummy_contract_data_1
+MMS_SIMS_dummy_data_2 --> OMS_dummy_contract_data_2
+MMS_estimate_site --> OMS_estimate_site
+MMS_maintenance_model --> OMS_maintenance_model
+MMS_estimate_contractor --> OMS_estimate_contractor
+MMS_Maintenance_Info --> OMS_maintenance_info
+MMS_contract_equipment --> OMS_contract_equipment
+MMS_contract_info --> OMS_contract_info
+
+
+
 ### 行動管理システム
 
 
